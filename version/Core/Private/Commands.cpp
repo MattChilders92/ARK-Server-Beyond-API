@@ -1,13 +1,9 @@
 #include "Commands.h"
 
+#include "IBaseApi.h"
+
 namespace ArkApi
 {
-	Commands& Commands::Get()
-	{
-		static Commands instance;
-		return instance;
-	}
-
 	void Commands::AddChatCommand(const FString& command,
 	                              const std::function<void(AShooterPlayerController*, FString*, EChatSendMode::Type)>&
 	                              callback)
@@ -88,14 +84,18 @@ namespace ArkApi
 	bool Commands::CheckRconCommands(RCONClientConnection* rcon_client_connection, RCONPacket* rcon_packet,
 	                                 UWorld* u_world)
 	{
-		return CheckCommands<RconCommand>(rcon_packet->Body, rcon_commands_, rcon_client_connection, rcon_packet, u_world);
+		return CheckCommands<RconCommand>(rcon_packet->Body, rcon_commands_, rcon_client_connection, rcon_packet,
+		                                  u_world);
 	}
 
 	void Commands::CheckOnTickCallbacks(float delta_seconds)
 	{
 		for (const auto& data : on_tick_callbacks_)
 		{
-			data->callback(delta_seconds);
+			if (data)
+			{
+				data->callback(delta_seconds);
+			}
 		}
 	}
 
@@ -103,7 +103,10 @@ namespace ArkApi
 	{
 		for (const auto& data : on_timer_callbacks_)
 		{
-			data->callback();
+			if (data)
+			{
+				data->callback();
+			}
 		}
 	}
 
@@ -126,6 +129,6 @@ namespace ArkApi
 	// Free function
 	ICommands& GetCommands()
 	{
-		return Commands::Get();
+		return *API::game_api->GetCommands();
 	}
-}
+} // namespace ArkApi

@@ -1,15 +1,14 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-#include <memory>
+#include <windows.h>
 
-#include <API/ARK/Ark.h>
+#include "json.hpp"
 
-#include "../../../json.hpp"
-
-namespace ArkApi
+namespace API
 {
 	struct Plugin
 	{
@@ -89,15 +88,15 @@ namespace ArkApi
 
 		void CheckPluginsDependencies();
 
+		static void DetectPluginChangesTimerCallback();
 		void DetectPluginChanges();
-
-		// Callbacks
-		static void LoadPluginCmd(APlayerController*, FString*, bool);
-		static void UnloadPluginCmd(APlayerController*, FString*, bool);
 
 		std::vector<std::shared_ptr<Plugin>> loaded_plugins_;
 
 		// Plugins auto reloading
-		int reload_sleep_seconds_;
+		bool enable_plugin_reload_{false};
+		int reload_sleep_seconds_{5};
+		bool save_world_before_reload_{true};
+		time_t next_reload_check_{5};
 	};
-}
+} // namespace API

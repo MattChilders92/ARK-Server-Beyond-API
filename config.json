@@ -1,9 +1,11 @@
-{
-  "settings":{
+{  
+  "settings":{  
     "AutomaticPluginReloading":false,
-    "AutomaticPluginReloadSeconds":5
+    "AutomaticPluginReloadSeconds":5,
+    "SaveWorldBeforePluginReload":true,
+	"DumpAll": false
   },
-  "structures":[
+  "structures":[  
     "UWorld",
     "AController",
     "AShooterPlayerController",
@@ -84,14 +86,21 @@
     "UActorComponent",
     "FHttpModule",
     "FHttpRequestWinInet",
-    "FHttpResponseWinInet"
+    "FHttpResponseWinInet",
+    "FOnlineSubsystemSteam",
+    "APrimalStructureTurret",
+    "FOverlapResult",
+    "UVictoryCore",
+    "ULevelBase",
+	"ABasePlayerController",
+	"FAvailableMission"
   ],
-  "functions":[
+  "functions":[  
     "StaticLoadObject",
     "RaycastSingle",
     "StaticConstructObject"
   ],
-  "globals":[
+  "globals":[  
     "GEngine"
   ]
 }
